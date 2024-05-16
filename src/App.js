@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useState } from "react";
+import Editor from "./layouts/Editor";
+import Preview from "./layouts/Preview";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [page, setPage] = useState(0);
+
+    const viewHandler = () => {
+        switch (page) {
+            case 0:
+                return <Editor setPage={setPage} />;
+            case 1:
+                return <Preview setPage={setPage} print={true} />;
+            default:
+                return null;
+        }
+    };
+
+    return <div className="App">{viewHandler()}</div>;
 }
 
 export default App;
