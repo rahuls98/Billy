@@ -4,9 +4,9 @@ const TextLine = ({ text, placeholderText }) => {
     return (
         <>
             {text ? (
-                <span class="text-line">{text}</span>
+                <span className="text-line">{text}</span>
             ) : (
-                <span class="text-line-placeholder">
+                <span className="text-line-placeholder">
                     <i>{placeholderText}</i>
                 </span>
             )}

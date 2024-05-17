@@ -27,6 +27,20 @@ button:hover {
     transition: 0.1s ease;
 }
 
+label {
+    margin-top: 20px;
+    display: block;
+}
+
+input {
+    display: block;
+    width: 200px;
+    padding: 5px;
+    border-radius: 8px;
+    border: var(--border-color) solid 1px;
+    margin-top: 5px;
+}
+
 @media print {
     body,
     html,

@@ -2,16 +2,20 @@ import "./style.css";
 import InvoiceBaseData from "./data.json";
 import VerticalSpace from "../VerticalSpace";
 import TextLine from "../TextLine";
+import { useContext } from "react";
+import { invoiceDataContext } from "../../contexts/invoiceDataContext";
 
 const PdfPreview = () => {
-    const invoiceMetadata = {
-        invoiceNo: "24-25/01",
-        invoiceDated: "17/04/24",
-        supplierCode: "24-25/01",
-        registrationDated: "17/04/24",
-        buyerOrderNo: "24-25/01",
-        buyerOrderDated: "17/04/24",
-    };
+    const { invoiceMetadata } = useContext(invoiceDataContext);
+
+    // const invoiceMetadata = {
+    //     invoiceNo: "24-25/01",
+    //     invoiceDated: "17/04/24",
+    //     supplierCode: "24-25/01",
+    //     registrationDated: "17/04/24",
+    //     buyerOrderNo: "24-25/01",
+    //     buyerOrderDated: "17/04/24",
+    // };
     const billingDetails = {
         CustomerName: "",
         AddressLine1: "",
@@ -32,38 +36,6 @@ const PdfPreview = () => {
             hsn: 995414,
             unitSqFt: 185,
             unitRate: 1200,
-        },
-        {
-            slno: 2,
-            particular:
-                "Electrical : Provision of switch boards, MCBs, lights and cabling work",
-            hsn: 995414,
-            unitSqFt: 1,
-            unitRate: 68000,
-        },
-        {
-            slno: 3,
-            particular:
-                "Plumbing : Bathroom fitting, tabletop basin and necessary plumbing works",
-            hsn: 995414,
-            unitSqFt: 1,
-            unitRate: 50000,
-        },
-        {
-            slno: 2,
-            particular:
-                "Electrical : Provision of switch boards, MCBs, lights and cabling work",
-            hsn: 995414,
-            unitSqFt: 1,
-            unitRate: 68000,
-        },
-        {
-            slno: 3,
-            particular:
-                "Plumbing : Bathroom fitting, tabletop basin and necessary plumbing works",
-            hsn: 995414,
-            unitSqFt: 1,
-            unitRate: 50000,
         },
         {
             slno: 2,
@@ -108,8 +80,8 @@ const PdfPreview = () => {
             <div id="letter-head">
                 <p id="letter-head-title">SHRISTI</p>
                 <div id="letter-head-address">
-                    {InvoiceBaseData["letter_head_address"].map((text) => (
-                        <TextLine text={text} />
+                    {InvoiceBaseData["letter_head_address"].map((text, idx) => (
+                        <TextLine key={idx} text={text} />
                     ))}
                 </div>
             </div>
@@ -125,9 +97,11 @@ const PdfPreview = () => {
                 <VerticalSpace size={20} />
                 <div id="provider-details">
                     <div>
-                        {InvoiceBaseData["provider-details"].map((text) => (
-                            <TextLine text={text} />
-                        ))}
+                        {InvoiceBaseData["provider-details"].map(
+                            (text, idx) => (
+                                <TextLine key={idx} text={text} />
+                            )
+                        )}
                     </div>
                     <div>
                         <TextLine text={"Invoice No."} />
