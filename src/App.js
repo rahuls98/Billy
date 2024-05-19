@@ -2,6 +2,7 @@ import "./App.css";
 import { useState } from "react";
 import Editor from "./layouts/Editor";
 import Preview from "./layouts/Preview";
+import DataTable from "./layouts/DataTable";
 
 function App() {
     const [page, setPage] = useState(0);
@@ -12,6 +13,8 @@ function App() {
                 return <Editor setPage={setPage} />;
             case 1:
                 return <Preview setPage={setPage} print={true} />;
+            case 2:
+                return <DataTable />;
             default:
                 return null;
         }

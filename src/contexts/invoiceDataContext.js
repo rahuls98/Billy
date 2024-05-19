@@ -1,4 +1,5 @@
 import { useState, createContext } from "react";
+import { writeData } from "../apis/data";
 
 export const invoiceDataContext = createContext({});
 
@@ -99,6 +100,32 @@ const InvoiceDataContextProvider = ({ children }) => {
         setParticulars(tempParticulars);
     };
 
+    const handleWriteDataToDb = async () => {
+        const data = {
+            invoiceNo,
+            invoiceDated,
+            supplierCode,
+            registrationDated,
+            buyerOrderNo,
+            buyerOrderDated,
+            billingCustomerName,
+            billingAddressLine1,
+            billingAddressLine2,
+            billingAddressLine3,
+            billingCustomerGstNumber,
+            deliveryCustomerName,
+            deliveryAddressLine1,
+            deliveryAddressLine2,
+            deliveryAddressLine3,
+            particulars,
+            cgst,
+            sgst,
+            igst,
+            totalInWords,
+        };
+        await writeData(data);
+    };
+
     return (
         <invoiceDataContext.Provider
             value={{
@@ -158,6 +185,7 @@ const InvoiceDataContextProvider = ({ children }) => {
                 },
                 totalInWords,
                 setTotalInWords,
+                handleWriteDataToDb,
             }}
         >
             {children}
