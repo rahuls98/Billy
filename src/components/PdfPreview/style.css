@@ -1,5 +1,5 @@
 .pdf-preview-container {
-    border: black solid 1px;
+    border: var(--border-color) solid 1px;
     padding: 10px;
     font-family: Arial, Helvetica, sans-serif;
     font-family: 11px;

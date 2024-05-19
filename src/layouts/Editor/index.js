@@ -9,7 +9,7 @@ const Editor = ({ setPage }) => {
     const { handleWriteDataToDb } = useContext(invoiceDataContext);
 
     const handlePrint = () => {
-        handleWriteDataToDb();
+        // handleWriteDataToDb();
         setPage(1);
     };
 

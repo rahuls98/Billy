@@ -240,11 +240,11 @@ const InvoiceForm = () => {
             {particulars &&
                 particulars.map((row, ridx) => {
                     return (
-                        <div>
+                        <div key={ridx}>
                             <h3>Item {ridx + 1}</h3>
                             {row.slice(1).map((col, cidx) => {
                                 return (
-                                    <div>
+                                    <div key={cidx}>
                                         <label
                                             htmlFor={`r${ridx}-c${cidx + 1}`}
                                         >
@@ -285,7 +285,7 @@ const InvoiceForm = () => {
                     type="checkbox"
                     id="cgst-checkbox"
                     checked={gst.cgstCheck}
-                    onClick={(e) => gst.setCgstCheck(e.currentTarget.checked)}
+                    onChange={(e) => gst.setCgstCheck(e.currentTarget.checked)}
                 />
                 <label htmlFor="cgst-checkbox" style={{ marginTop: 0 }}>
                     CGST
@@ -309,7 +309,7 @@ const InvoiceForm = () => {
                     type="checkbox"
                     id="sgst-checkbox"
                     checked={gst.sgstCheck}
-                    onClick={(e) => gst.setSgstCheck(e.currentTarget.checked)}
+                    onChange={(e) => gst.setSgstCheck(e.currentTarget.checked)}
                 />
                 <label htmlFor="sgst-checkbox" style={{ marginTop: 0 }}>
                     SGST
@@ -333,7 +333,7 @@ const InvoiceForm = () => {
                     type="checkbox"
                     id="igst-checkbox"
                     checked={gst.igstCheck}
-                    onClick={(e) => gst.setIgstCheck(e.currentTarget.checked)}
+                    onChange={(e) => gst.setIgstCheck(e.currentTarget.checked)}
                 />
                 <label htmlFor="igst-checkbox" style={{ marginTop: 0 }}>
                     IGST

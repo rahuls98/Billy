@@ -20,7 +20,27 @@ function App() {
         }
     };
 
-    return <div className="App">{viewHandler()}</div>;
+    return (
+        <div className="App">
+            {page !== 1 ? (
+                <div className="navbar">
+                    <span
+                        className={page === 0 ? "active" : ""}
+                        onClick={() => setPage(0)}
+                    >
+                        Editor
+                    </span>
+                    <span
+                        className={page === 2 ? "active" : ""}
+                        onClick={() => setPage(2)}
+                    >
+                        Database
+                    </span>
+                </div>
+            ) : null}
+            {viewHandler()}
+        </div>
+    );
 }
 
 export default App;
