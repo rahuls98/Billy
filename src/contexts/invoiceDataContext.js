@@ -100,6 +100,42 @@ const InvoiceDataContextProvider = ({ children }) => {
         setParticulars(tempParticulars);
     };
 
+    const createBillForPreview = (data) => {
+        return {
+            invoiceMetadata: {
+                invoiceNo: data?.invoiceNo || "",
+                invoiceDated: data?.invoiceDated || "",
+                supplierCode: data?.supplierCode || "",
+                registrationDated: data?.registrationDated || "",
+                buyerOrderNo: data?.buyerOrderNo || "",
+                buyerOrderDated: data?.buyerOrderDated || "",
+            },
+            billingDetails: {
+                customerName: data?.billingCustomerName || "",
+                addressLine1: data?.billingAddressLine1 || "",
+                addressLine2: data?.billingAddressLine2 || "",
+                addressLine3: data?.billingAddressLine3 || "",
+                customerGstNumber: data?.billingCustomerGstNumber || "",
+            },
+            deliveryAddress: {
+                customerName: data?.deliveryCustomerName || "",
+                addressLine1: data?.deliveryAddressLine1 || "",
+                addressLine2: data?.deliveryAddressLine2 || "",
+                addressLine3: data?.deliveryAddressLine3 || "",
+            },
+            particulars: data?.particulars || "",
+            gst: {
+                cgst: data?.cgst || 9,
+                cgstCheck: data?.cgstCheck || true,
+                sgst: data?.sgst || 9,
+                sgstCheck: data?.sgstCheck || true,
+                igst: data?.igst || 18,
+                igstCheck: data?.igstCheck || false,
+            },
+            totalInWords: data?.totalInWords || "",
+        };
+    };
+
     const handleWriteDataToDb = async () => {
         const data = {
             invoiceNo,
@@ -119,8 +155,11 @@ const InvoiceDataContextProvider = ({ children }) => {
             deliveryAddressLine3,
             particulars,
             cgst,
+            cgstCheck,
             sgst,
+            sgstCheck,
             igst,
+            igstCheck,
             totalInWords,
         };
         await writeData(data);
@@ -185,6 +224,7 @@ const InvoiceDataContextProvider = ({ children }) => {
                 },
                 totalInWords,
                 setTotalInWords,
+                createBillForPreview,
                 handleWriteDataToDb,
             }}
         >

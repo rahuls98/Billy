@@ -2,10 +2,8 @@ import "./style.css";
 import InvoiceBaseData from "./data.json";
 import VerticalSpace from "../VerticalSpace";
 import TextLine from "../TextLine";
-import { useContext } from "react";
-import { invoiceDataContext } from "../../contexts/invoiceDataContext";
 
-const PdfPreview = () => {
+const PdfPreview = ({ bill }) => {
     const {
         invoiceMetadata,
         billingDetails,
@@ -13,7 +11,7 @@ const PdfPreview = () => {
         particulars,
         gst,
         totalInWords,
-    } = useContext(invoiceDataContext);
+    } = bill;
 
     const getSubTotal = () => {
         return particulars.reduce(

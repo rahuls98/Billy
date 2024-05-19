@@ -6,11 +6,28 @@ import { useContext } from "react";
 import { invoiceDataContext } from "../../contexts/invoiceDataContext";
 
 const Editor = ({ setPage }) => {
-    const { handleWriteDataToDb } = useContext(invoiceDataContext);
+    const {
+        invoiceMetadata,
+        billingDetails,
+        deliveryAddress,
+        particulars,
+        gst,
+        totalInWords,
+        handleWriteDataToDb,
+    } = useContext(invoiceDataContext);
 
     const handlePrint = () => {
         // handleWriteDataToDb();
         setPage(1);
+    };
+
+    const bill = {
+        invoiceMetadata,
+        billingDetails,
+        deliveryAddress,
+        particulars,
+        gst,
+        totalInWords,
     };
 
     return (
@@ -21,7 +38,7 @@ const Editor = ({ setPage }) => {
             <div id="editor-pdf-preview" className="collapsable">
                 <PdfPreviewControls printHandler={handlePrint} />
                 <div id="pdf-preview">
-                    <PdfPreview />
+                    <PdfPreview bill={bill} />
                 </div>
             </div>
         </div>

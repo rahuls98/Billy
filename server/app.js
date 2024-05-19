@@ -54,7 +54,7 @@ app.get("/readInvoiceAndCustomerNames", async (req, res) => {
         const aggregationPipeline = [
             {
                 $project: {
-                    _id: 0,
+                    _id: 1,
                     invoiceNo: 1,
                     billingCustomerName: 1,
                 },
