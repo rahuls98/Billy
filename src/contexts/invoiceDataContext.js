@@ -1,4 +1,4 @@
-import { useState, createContext, Children } from "react";
+import { useState, createContext } from "react";
 
 export const invoiceDataContext = createContext({});
 
@@ -9,6 +9,95 @@ const InvoiceDataContextProvider = ({ children }) => {
     const [registrationDated, setRegistrationDated] = useState("");
     const [buyerOrderNo, setBuyerOrderNo] = useState("");
     const [buyerOrderDated, setBuyerOrderDated] = useState("");
+    const [billingCustomerName, setBillingCustomerName] = useState("");
+    const [billingAddressLine1, setBillingAddressLine1] = useState("");
+    const [billingAddressLine2, setBillingAddressLine2] = useState("");
+    const [billingAddressLine3, setBillingAddressLine3] = useState("");
+    const [billingCustomerGstNumber, setBillingCustomerGstNumber] =
+        useState("");
+    const [deliveryCustomerName, setDeliveryCustomerName] = useState("");
+    const [deliveryAddressLine1, setDeliveryAddressLine1] = useState("");
+    const [deliveryAddressLine2, setDeliveryAddressLine2] = useState("");
+    const [deliveryAddressLine3, setDeliveryAddressLine3] = useState("");
+    const [particulars, setParticulars] = useState([
+        [
+            {
+                label: "No.",
+                value: 1,
+            },
+            {
+                label: "Particular",
+                value: "",
+            },
+            {
+                label: "HSN/SAC",
+                value: "",
+            },
+            {
+                label: "Unit sq. ft.",
+                value: 0,
+            },
+            {
+                label: "Unit Rate",
+                value: 0,
+            },
+        ],
+    ]);
+    const [cgstCheck, setCgstCheck] = useState(true);
+    const [cgst, setCgst] = useState(9);
+    const [sgstCheck, setSgstCheck] = useState(true);
+    const [sgst, setSgst] = useState(9);
+    const [igstCheck, setIgstCheck] = useState(false);
+    const [igst, setIgst] = useState(18);
+    const [totalInWords, setTotalInWords] = useState("");
+
+    const handleSetParticulars = (id, value) => {
+        let [row, col] = id.split("-");
+        row = Number(row.slice(1));
+        col = Number(col.slice(1));
+        let tempParticulars = [...particulars];
+        let particular = tempParticulars[row];
+        let field = particular[col];
+        field.value = value;
+        particular[col] = field;
+        tempParticulars[row] = particular;
+        setParticulars(tempParticulars);
+    };
+
+    const handleAddParticular = () => {
+        let tempParticulars = [
+            ...particulars,
+            [
+                {
+                    label: "No.",
+                    value: particulars.length + 1,
+                },
+                {
+                    label: "Particular",
+                    value: "",
+                },
+                {
+                    label: "HSN/SAC",
+                    value: "",
+                },
+                {
+                    label: "Unit sq. ft.",
+                    value: 0,
+                },
+                {
+                    label: "Unit Rate",
+                    value: 0,
+                },
+            ],
+        ];
+        setParticulars(tempParticulars);
+    };
+
+    const handleDeleteParticular = (id) => {
+        let tempParticulars = [...particulars];
+        tempParticulars.splice(particulars.length - 1, 1);
+        setParticulars(tempParticulars);
+    };
 
     return (
         <invoiceDataContext.Provider
@@ -27,6 +116,48 @@ const InvoiceDataContextProvider = ({ children }) => {
                     buyerOrderDated,
                     setBuyerOrderDated,
                 },
+                billingDetails: {
+                    customerName: billingCustomerName,
+                    setCustomerName: setBillingCustomerName,
+                    addressLine1: billingAddressLine1,
+                    setAddressLine1: setBillingAddressLine1,
+                    addressLine2: billingAddressLine2,
+                    setAddressLine2: setBillingAddressLine2,
+                    addressLine3: billingAddressLine3,
+                    setAddressLine3: setBillingAddressLine3,
+                    customerGstNumber: billingCustomerGstNumber,
+                    setCustomerGstNumber: setBillingCustomerGstNumber,
+                },
+                deliveryAddress: {
+                    customerName: deliveryCustomerName,
+                    setCustomerName: setDeliveryCustomerName,
+                    addressLine1: deliveryAddressLine1,
+                    setAddressLine1: setDeliveryAddressLine1,
+                    addressLine2: deliveryAddressLine2,
+                    setAddressLine2: setDeliveryAddressLine2,
+                    addressLine3: deliveryAddressLine3,
+                    setAddressLine3: setDeliveryAddressLine3,
+                },
+                particulars,
+                handleSetParticulars,
+                handleAddParticular,
+                handleDeleteParticular,
+                gst: {
+                    cgstCheck,
+                    setCgstCheck,
+                    cgst,
+                    setCgst,
+                    sgstCheck,
+                    setSgstCheck,
+                    sgst,
+                    setSgst,
+                    igstCheck,
+                    setIgstCheck,
+                    igst,
+                    setIgst,
+                },
+                totalInWords,
+                setTotalInWords,
             }}
         >
             {children}

@@ -32,10 +32,10 @@ label {
     display: block;
 }
 
-input {
+input[type="text"] {
     display: block;
-    width: 200px;
-    padding: 5px;
+    width: 300px;
+    padding: 10px;
     border-radius: 8px;
     border: var(--border-color) solid 1px;
     margin-top: 5px;

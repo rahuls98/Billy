@@ -5,7 +5,10 @@
 
 #editor-form {
     width: 50vw;
-    padding: 10px;
+    height: 100%;
+    padding: 20px;
+    overflow-y: scroll;
+    box-sizing: border-box;
 }
 
 #editor-pdf-preview {

@@ -6,72 +6,34 @@ import { useContext } from "react";
 import { invoiceDataContext } from "../../contexts/invoiceDataContext";
 
 const PdfPreview = () => {
-    const { invoiceMetadata } = useContext(invoiceDataContext);
-
-    // const invoiceMetadata = {
-    //     invoiceNo: "24-25/01",
-    //     invoiceDated: "17/04/24",
-    //     supplierCode: "24-25/01",
-    //     registrationDated: "17/04/24",
-    //     buyerOrderNo: "24-25/01",
-    //     buyerOrderDated: "17/04/24",
-    // };
-    const billingDetails = {
-        CustomerName: "",
-        AddressLine1: "",
-        AddressLine2: "",
-        AddressLine3: "",
-        CustomerGstNumber: "",
-    };
-    const deliveryAddress = {
-        CustomerName: "",
-        AddressLine1: "",
-        AddressLine2: "",
-        AddressLine3: "",
-    };
-    const particulars = [
-        {
-            slno: 1,
-            particular: "Carpentry work : Storage units and reception table",
-            hsn: 995414,
-            unitSqFt: 185,
-            unitRate: 1200,
-        },
-        {
-            slno: 2,
-            particular:
-                "Electrical : Provision of switch boards, MCBs, lights and cabling work",
-            hsn: 995414,
-            unitSqFt: 1,
-            unitRate: 68000,
-        },
-        {
-            slno: 3,
-            particular:
-                "Plumbing : Bathroom fitting, tabletop basin and necessary plumbing works",
-            hsn: 995414,
-            unitSqFt: 1,
-            unitRate: 50000,
-        },
-    ];
-    const cgst = 9;
-    const sgst = 9;
-    const igst = 0;
-    const totalInWords = "";
+    const {
+        invoiceMetadata,
+        billingDetails,
+        deliveryAddress,
+        particulars,
+        gst,
+        totalInWords,
+    } = useContext(invoiceDataContext);
 
     const getSubTotal = () => {
         return particulars.reduce(
             (acc, particular) =>
-                acc + particular.unitSqFt * particular.unitRate,
+                acc + particular[3].value * particular[4].value,
             0
         );
     };
 
     const getTotalAmount = () => {
         let subTotal = getSubTotal();
-        let cgstAmount = (cgst / 100) * subTotal;
-        let sgstAmount = (sgst / 100) * subTotal;
-        let igstAmount = (igst / 100) * subTotal;
+        let cgstAmount = gst.cgstCheck
+            ? (Number(gst.cgst) / 100) * subTotal
+            : 0;
+        let sgstAmount = gst.sgstCheck
+            ? (Number(gst.sgst) / 100) * subTotal
+            : 0;
+        let igstAmount = gst.igstCheck
+            ? (Number(gst.igst) / 100) * subTotal
+            : 0;
         return subTotal + cgstAmount + sgstAmount + igstAmount;
     };
 
@@ -129,42 +91,42 @@ const PdfPreview = () => {
                     <div>
                         <h3>Billing Details</h3>
                         <TextLine
-                            text={billingDetails.CustomerName}
+                            text={billingDetails.customerName}
                             placeholderText={"Customer Name"}
                         />
                         <TextLine
-                            text={billingDetails.AddressLine1}
+                            text={billingDetails.addressLine1}
                             placeholderText={"Address Line 1"}
                         />
                         <TextLine
-                            text={billingDetails.AddressLine2}
+                            text={billingDetails.addressLine2}
                             placeholderText={"Address Line 2"}
                         />
                         <TextLine
-                            text={billingDetails.AddressLine3}
+                            text={billingDetails.addressLine3}
                             placeholderText={"Address Line 3"}
                         />
                         <TextLine
-                            text={billingDetails.CustomerGstNumber}
+                            text={billingDetails.customerGstNumber}
                             placeholderText={"Customer GST Number"}
                         />
                     </div>
                     <div>
                         <h3>Delivery Address</h3>
                         <TextLine
-                            text={deliveryAddress.CustomerName}
+                            text={deliveryAddress.customerName}
                             placeholderText={"Customer Name"}
                         />
                         <TextLine
-                            text={deliveryAddress.AddressLine1}
+                            text={deliveryAddress.addressLine1}
                             placeholderText={"Address Line 1"}
                         />
                         <TextLine
-                            text={deliveryAddress.AddressLine2}
+                            text={deliveryAddress.addressLine2}
                             placeholderText={"Address Line 2"}
                         />
                         <TextLine
-                            text={deliveryAddress.AddressLine3}
+                            text={deliveryAddress.addressLine3}
                             placeholderText={"Address Line 3"}
                         />
                     </div>
@@ -185,32 +147,29 @@ const PdfPreview = () => {
                     </thead>
                     <tbody>
                         {particulars.map((particular) => (
-                            <tr key={particular.slno}>
-                                <td>{particular.slno}</td>
-                                <td>{particular.particular}</td>
-                                <td>{particular.hsn}</td>
-                                <td>{particular.unitSqFt}</td>
+                            <tr key={particular[0].value}>
+                                <td>{particular[0].value}</td>
+                                <td>{particular[1].value}</td>
+                                <td>{particular[2].value}</td>
+                                <td>{particular[3].value}</td>
                                 <td>
-                                    {particular.unitRate.toLocaleString(
+                                    {particular[4].value.toLocaleString(
                                         "en-IN"
                                     )}
                                 </td>
                                 <td>
                                     {(
-                                        particular.unitSqFt *
-                                        particular.unitRate
+                                        particular[3].value *
+                                        particular[4].value
                                     ).toLocaleString("en-IN")}
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-                <VerticalSpace size={10} />
+                <VerticalSpace size={20} />
                 <table id="price-summation">
                     <tbody>
-                        <tr>
-                            <td colSpan={2}></td>
-                        </tr>
                         <tr>
                             <td width="80%">Sub Total</td>
                             <td width="20%">
@@ -223,36 +182,42 @@ const PdfPreview = () => {
                                     <u>Add:</u>
                                 </strong>
                                 <br />
-                                <TextLine text={"CGST @ 9%"} />
-                                <TextLine text={"SGST @ 9%"} />
-                                <TextLine text={"IGST @18%"} />
+                                <TextLine text={`CGST @ ${gst.cgst}%`} />
+                                <TextLine text={`SGST @ ${gst.sgst}%`} />
+                                <TextLine text={`IGST @ ${gst.igst}%`} />
                             </td>
                             <td>
                                 <br />
                                 <TextLine
                                     text={
-                                        (
-                                            (cgst / 100) *
-                                            getSubTotal()
-                                        ).toLocaleString("en-IN") || ""
+                                        gst.cgstCheck
+                                            ? (
+                                                  (Number(gst.cgst) / 100) *
+                                                  getSubTotal()
+                                              ).toLocaleString("en-IN")
+                                            : ""
                                     }
                                     placeholderText={"-"}
                                 />
                                 <TextLine
                                     text={
-                                        (
-                                            (sgst / 100) *
-                                            getSubTotal()
-                                        ).toLocaleString("en-IN") || ""
+                                        gst.sgstCheck
+                                            ? (
+                                                  (Number(gst.sgst) / 100) *
+                                                  getSubTotal()
+                                              ).toLocaleString("en-IN")
+                                            : ""
                                     }
                                     placeholderText={"-"}
                                 />
                                 <TextLine
                                     text={
-                                        (
-                                            (igst / 100) *
-                                            getSubTotal()
-                                        ).toLocaleString("en-IN") || ""
+                                        gst.igstCheck
+                                            ? (
+                                                  (Number(gst.igst) / 100) *
+                                                  getSubTotal()
+                                              ).toLocaleString("en-IN")
+                                            : ""
                                     }
                                     placeholderText={"-"}
                                 />
