@@ -16,11 +16,6 @@ const Editor = ({ setPage }) => {
         handleWriteDataToDb,
     } = useContext(invoiceDataContext);
 
-    const handlePrint = () => {
-        // handleWriteDataToDb();
-        setPage(1);
-    };
-
     const bill = {
         invoiceMetadata,
         billingDetails,
@@ -30,13 +25,24 @@ const Editor = ({ setPage }) => {
         totalInWords,
     };
 
+    const handlePrint = () => {
+        setPage(1);
+    };
+
+    const handleUpload = () => {
+        handleWriteDataToDb();
+    };
+
     return (
         <div id="editor-container">
             <div id="editor-form">
                 <InvoiceForm />
             </div>
             <div id="editor-pdf-preview" className="collapsable">
-                <PdfPreviewControls printHandler={handlePrint} />
+                <PdfPreviewControls
+                    printHandler={handlePrint}
+                    uploadHandler={handleUpload}
+                />
                 <div id="pdf-preview">
                     <PdfPreview bill={bill} />
                 </div>

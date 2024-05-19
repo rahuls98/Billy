@@ -18,6 +18,14 @@ const InvoiceForm = () => {
     const [deliveryAddressFieldsSeen, setDeliveryAddressFieldsSeen] =
         useState(true);
 
+    const handleSameDeliveryAddress = (e) => {
+        setDeliveryAddressFieldsSeen(!e.currentTarget.checked);
+        deliveryAddress.setCustomerName(billingDetails.customerName);
+        deliveryAddress.setAddressLine1(billingDetails.addressLine1);
+        deliveryAddress.setAddressLine2(billingDetails.addressLine2);
+        deliveryAddress.setAddressLine3(billingDetails.addressLine3);
+    };
+
     return (
         <div>
             <div>
@@ -159,9 +167,7 @@ const InvoiceForm = () => {
                 <input
                     id="delivery-same-as-billing"
                     type="checkbox"
-                    onClick={(e) =>
-                        setDeliveryAddressFieldsSeen(!e.currentTarget.checked)
-                    }
+                    onClick={(e) => handleSameDeliveryAddress(e)}
                 />
                 <label
                     style={{ margin: "0 0 0 10px" }}

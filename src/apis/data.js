@@ -38,9 +38,11 @@ export const writeData = async (data) => {
 
         const responseData = await response.json();
         console.log(responseData);
+        alert("Uploaded!");
         return responseData;
     } catch (error) {
         console.error(error);
+        alert("Error!");
         throw error;
     }
 };

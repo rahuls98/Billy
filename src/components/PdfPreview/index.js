@@ -14,23 +14,27 @@ const PdfPreview = ({ bill }) => {
     } = bill;
 
     const getSubTotal = () => {
-        return particulars.reduce(
-            (acc, particular) =>
-                acc + particular[3].value * particular[4].value,
-            0
-        );
+        if (particulars.length > 0) {
+            return particulars?.reduce(
+                (acc, particular) =>
+                    acc + particular[3].value * particular[4].value,
+                0
+            );
+        } else {
+            return 0;
+        }
     };
 
     const getTotalAmount = () => {
         let subTotal = getSubTotal();
-        let cgstAmount = gst.cgstCheck
-            ? (Number(gst.cgst) / 100) * subTotal
+        let cgstAmount = gst?.cgstCheck
+            ? (Number(gst?.cgst) / 100) * subTotal
             : 0;
-        let sgstAmount = gst.sgstCheck
-            ? (Number(gst.sgst) / 100) * subTotal
+        let sgstAmount = gst?.sgstCheck
+            ? (Number(gst?.sgst) / 100) * subTotal
             : 0;
-        let igstAmount = gst.igstCheck
-            ? (Number(gst.igst) / 100) * subTotal
+        let igstAmount = gst?.igstCheck
+            ? (Number(gst?.igst) / 100) * subTotal
             : 0;
         return subTotal + cgstAmount + sgstAmount + igstAmount;
     };
@@ -72,15 +76,15 @@ const PdfPreview = ({ bill }) => {
                         <TextLine text={"Buyer Order Dated"} />
                     </div>
                     <div>
-                        <TextLine text={": " + invoiceMetadata.invoiceNo} />
-                        <TextLine text={": " + invoiceMetadata.invoiceDated} />
-                        <TextLine text={": " + invoiceMetadata.supplierCode} />
+                        <TextLine text={": " + invoiceMetadata?.invoiceNo} />
+                        <TextLine text={": " + invoiceMetadata?.invoiceDated} />
+                        <TextLine text={": " + invoiceMetadata?.supplierCode} />
                         <TextLine
-                            text={": " + invoiceMetadata.registrationDated}
+                            text={": " + invoiceMetadata?.registrationDated}
                         />
-                        <TextLine text={": " + invoiceMetadata.buyerOrderNo} />
+                        <TextLine text={": " + invoiceMetadata?.buyerOrderNo} />
                         <TextLine
-                            text={": " + invoiceMetadata.buyerOrderDated}
+                            text={": " + invoiceMetadata?.buyerOrderDated}
                         />
                     </div>
                 </div>
@@ -89,42 +93,42 @@ const PdfPreview = ({ bill }) => {
                     <div>
                         <h3>Billing Details</h3>
                         <TextLine
-                            text={billingDetails.customerName}
+                            text={billingDetails?.customerName}
                             placeholderText={"Customer Name"}
                         />
                         <TextLine
-                            text={billingDetails.addressLine1}
+                            text={billingDetails?.addressLine1}
                             placeholderText={"Address Line 1"}
                         />
                         <TextLine
-                            text={billingDetails.addressLine2}
+                            text={billingDetails?.addressLine2}
                             placeholderText={"Address Line 2"}
                         />
                         <TextLine
-                            text={billingDetails.addressLine3}
+                            text={billingDetails?.addressLine3}
                             placeholderText={"Address Line 3"}
                         />
                         <TextLine
-                            text={billingDetails.customerGstNumber}
+                            text={billingDetails?.customerGstNumber}
                             placeholderText={"Customer GST Number"}
                         />
                     </div>
                     <div>
                         <h3>Delivery Address</h3>
                         <TextLine
-                            text={deliveryAddress.customerName}
+                            text={deliveryAddress?.customerName}
                             placeholderText={"Customer Name"}
                         />
                         <TextLine
-                            text={deliveryAddress.addressLine1}
+                            text={deliveryAddress?.addressLine1}
                             placeholderText={"Address Line 1"}
                         />
                         <TextLine
-                            text={deliveryAddress.addressLine2}
+                            text={deliveryAddress?.addressLine2}
                             placeholderText={"Address Line 2"}
                         />
                         <TextLine
-                            text={deliveryAddress.addressLine3}
+                            text={deliveryAddress?.addressLine3}
                             placeholderText={"Address Line 3"}
                         />
                     </div>
@@ -144,25 +148,26 @@ const PdfPreview = ({ bill }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {particulars.map((particular) => (
-                            <tr key={particular[0].value}>
-                                <td>{particular[0].value}</td>
-                                <td>{particular[1].value}</td>
-                                <td>{particular[2].value}</td>
-                                <td>{particular[3].value}</td>
-                                <td>
-                                    {particular[4].value.toLocaleString(
-                                        "en-IN"
-                                    )}
-                                </td>
-                                <td>
-                                    {(
-                                        particular[3].value *
-                                        particular[4].value
-                                    ).toLocaleString("en-IN")}
-                                </td>
-                            </tr>
-                        ))}
+                        {particulars &&
+                            particulars.map((particular) => (
+                                <tr key={particular[0]?.value}>
+                                    <td>{particular[0]?.value}</td>
+                                    <td>{particular[1]?.value}</td>
+                                    <td>{particular[2]?.value}</td>
+                                    <td>{particular[3]?.value}</td>
+                                    <td>
+                                        {particular[4]?.value?.toLocaleString(
+                                            "en-IN"
+                                        )}
+                                    </td>
+                                    <td>
+                                        {(
+                                            particular[3]?.value *
+                                            particular[4]?.value
+                                        ).toLocaleString("en-IN")}
+                                    </td>
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
                 <VerticalSpace size={20} />
@@ -171,7 +176,7 @@ const PdfPreview = ({ bill }) => {
                         <tr>
                             <td width="80%">Sub Total</td>
                             <td width="20%">
-                                {getSubTotal().toLocaleString("en-IN")}
+                                {getSubTotal()?.toLocaleString("en-IN")}
                             </td>
                         </tr>
                         <tr>
@@ -180,17 +185,17 @@ const PdfPreview = ({ bill }) => {
                                     <u>Add:</u>
                                 </strong>
                                 <br />
-                                <TextLine text={`CGST @ ${gst.cgst}%`} />
-                                <TextLine text={`SGST @ ${gst.sgst}%`} />
-                                <TextLine text={`IGST @ ${gst.igst}%`} />
+                                <TextLine text={`CGST @ ${gst?.cgst}%`} />
+                                <TextLine text={`SGST @ ${gst?.sgst}%`} />
+                                <TextLine text={`IGST @ ${gst?.igst}%`} />
                             </td>
                             <td>
                                 <br />
                                 <TextLine
                                     text={
-                                        gst.cgstCheck
+                                        gst?.cgstCheck
                                             ? (
-                                                  (Number(gst.cgst) / 100) *
+                                                  (Number(gst?.cgst) / 100) *
                                                   getSubTotal()
                                               ).toLocaleString("en-IN")
                                             : ""
@@ -199,9 +204,9 @@ const PdfPreview = ({ bill }) => {
                                 />
                                 <TextLine
                                     text={
-                                        gst.sgstCheck
+                                        gst?.sgstCheck
                                             ? (
-                                                  (Number(gst.sgst) / 100) *
+                                                  (Number(gst?.sgst) / 100) *
                                                   getSubTotal()
                                               ).toLocaleString("en-IN")
                                             : ""
@@ -210,9 +215,9 @@ const PdfPreview = ({ bill }) => {
                                 />
                                 <TextLine
                                     text={
-                                        gst.igstCheck
+                                        gst?.igstCheck
                                             ? (
-                                                  (Number(gst.igst) / 100) *
+                                                  (Number(gst?.igst) / 100) *
                                                   getSubTotal()
                                               ).toLocaleString("en-IN")
                                             : ""
@@ -247,6 +252,22 @@ const PdfPreview = ({ bill }) => {
                     </tbody>
                 </table>
             </div>
+            <VerticalSpace size={50} />
+            <div id="bank-and-signature">
+                <div>
+                    <TextLine text={"Bank Details"} />
+                    <TextLine text={process.env.REACT_APP_BANK_ACCOUNT_NAME} />
+                    <TextLine text={process.env.REACT_APP_BANK_ACCOUNT} />
+                    <TextLine text={process.env.REACT_APP_BANK_BRANCH} />
+                    <TextLine text={process.env.REACT_APP_BANK_IFSC} />
+                </div>
+                <div>
+                    <TextLine text={"For SHRISTI"} />
+                    <VerticalSpace size={50} />
+                    <TextLine text={"Authorised signatory"} />
+                </div>
+            </div>
+            <VerticalSpace size={20} />
         </div>
     );
 };

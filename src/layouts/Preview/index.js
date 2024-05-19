@@ -1,7 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import PdfPreview from "../../components/PdfPreview";
+import { invoiceDataContext } from "../../contexts/invoiceDataContext";
 
 const Preview = ({ setPage, print }) => {
+    const { createBillForPreview } = useContext(invoiceDataContext);
+
     useEffect(() => {
         if (print) {
             window.print();
@@ -11,7 +14,7 @@ const Preview = ({ setPage, print }) => {
 
     return (
         <>
-            <PdfPreview />
+            <PdfPreview bill={createBillForPreview()} />
         </>
     );
 };

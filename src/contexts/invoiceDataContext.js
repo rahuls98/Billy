@@ -103,34 +103,39 @@ const InvoiceDataContextProvider = ({ children }) => {
     const createBillForPreview = (data) => {
         return {
             invoiceMetadata: {
-                invoiceNo: data?.invoiceNo || "",
-                invoiceDated: data?.invoiceDated || "",
-                supplierCode: data?.supplierCode || "",
-                registrationDated: data?.registrationDated || "",
-                buyerOrderNo: data?.buyerOrderNo || "",
-                buyerOrderDated: data?.buyerOrderDated || "",
+                invoiceNo: data?.invoiceNo || invoiceNo,
+                invoiceDated: data?.invoiceDated || invoiceDated,
+                supplierCode: data?.supplierCode || supplierCode,
+                registrationDated: data?.registrationDated || registrationDated,
+                buyerOrderNo: data?.buyerOrderNo || buyerOrderNo,
+                buyerOrderDated: data?.buyerOrderDated || buyerOrderDated,
             },
             billingDetails: {
-                customerName: data?.billingCustomerName || "",
-                addressLine1: data?.billingAddressLine1 || "",
-                addressLine2: data?.billingAddressLine2 || "",
-                addressLine3: data?.billingAddressLine3 || "",
-                customerGstNumber: data?.billingCustomerGstNumber || "",
+                customerName: data?.billingCustomerName || billingCustomerName,
+                addressLine1: data?.billingAddressLine1 || billingAddressLine1,
+                addressLine2: data?.billingAddressLine2 || billingAddressLine2,
+                addressLine3: data?.billingAddressLine3 || billingAddressLine3,
+                customerGstNumber:
+                    data?.billingCustomerGstNumber || billingCustomerGstNumber,
             },
             deliveryAddress: {
-                customerName: data?.deliveryCustomerName || "",
-                addressLine1: data?.deliveryAddressLine1 || "",
-                addressLine2: data?.deliveryAddressLine2 || "",
-                addressLine3: data?.deliveryAddressLine3 || "",
+                customerName:
+                    data?.deliveryCustomerName || deliveryCustomerName,
+                addressLine1:
+                    data?.deliveryAddressLine1 || deliveryAddressLine1,
+                addressLine2:
+                    data?.deliveryAddressLine2 || deliveryAddressLine2,
+                addressLine3:
+                    data?.deliveryAddressLine3 || deliveryAddressLine3,
             },
             particulars: data?.particulars || "",
             gst: {
-                cgst: data?.cgst || 9,
-                cgstCheck: data?.cgstCheck || true,
-                sgst: data?.sgst || 9,
-                sgstCheck: data?.sgstCheck || true,
-                igst: data?.igst || 18,
-                igstCheck: data?.igstCheck || false,
+                cgst: data?.cgst || cgst,
+                cgstCheck: data?.cgstCheck || cgstCheck,
+                sgst: data?.sgst || sgst,
+                sgstCheck: data?.sgstCheck || sgstCheck,
+                igst: data?.igst || igst,
+                igstCheck: data?.igstCheck || igstCheck,
             },
             totalInWords: data?.totalInWords || "",
         };
