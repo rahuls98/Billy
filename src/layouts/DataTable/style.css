@@ -38,15 +38,18 @@ ul {
 }
 
 li {
-    margin: 20px 0 0 20px;
+    margin: 20px 0 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-li.active {
+li div:nth-of-type(1).active {
     text-decoration: underline;
     font-weight: bold;
 }
 
-li:hover {
+li div:nth-of-type(1):hover {
     cursor: pointer;
     text-decoration: underline;
 }

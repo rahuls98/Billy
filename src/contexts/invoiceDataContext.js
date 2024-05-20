@@ -170,6 +170,33 @@ const InvoiceDataContextProvider = ({ children }) => {
         await writeData(data);
     };
 
+    const setBillForEdit = (bill) => {
+        console.log(bill);
+        setInvoiceNo(bill.invoiceMetadata.invoiceNo);
+        setInvoiceDated(bill.invoiceMetadata.invoiceDated);
+        setSupplierCode(bill.invoiceMetadata.supplierCode);
+        setRegistrationDated(bill.invoiceMetadata.registrationDated);
+        setBuyerOrderNo(bill.invoiceMetadata.buyerOrderNo);
+        setBuyerOrderDated(bill.invoiceMetadata.buyerOrderDated);
+        setBillingCustomerName(bill.billingDetails.customerName);
+        setBillingAddressLine1(bill.billingDetails.addressLine1);
+        setBillingAddressLine2(bill.billingDetails.addressLine2);
+        setBillingAddressLine3(bill.billingDetails.addressLine3);
+        setBillingCustomerGstNumber(bill.billingDetails.customerGstNumber);
+        setDeliveryCustomerName(bill.deliveryAddress.customerName);
+        setDeliveryAddressLine1(bill.deliveryAddress.addressLine1);
+        setDeliveryAddressLine2(bill.deliveryAddress.addressLine2);
+        setDeliveryAddressLine3(bill.deliveryAddress.addressLine3);
+        setParticulars(bill.particulars);
+        setCgstCheck(bill.gst.cgstCheck);
+        setCgst(bill.gst.cgst);
+        setSgstCheck(bill.gst.sgstCheck);
+        setSgst(bill.gst.sgst);
+        setIgstCheck(bill.gst.igstCheck);
+        setIgst(bill.gst.igst);
+        setTotalInWords(bill.totalInWords);
+    };
+
     return (
         <invoiceDataContext.Provider
             value={{
@@ -230,6 +257,7 @@ const InvoiceDataContextProvider = ({ children }) => {
                 totalInWords,
                 setTotalInWords,
                 createBillForPreview,
+                setBillForEdit,
                 handleWriteDataToDb,
             }}
         >

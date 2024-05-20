@@ -14,7 +14,7 @@ function App() {
             case 1:
                 return <Preview setPage={setPage} print={true} />;
             case 2:
-                return <DataTable />;
+                return <DataTable setPage={setPage} />;
             default:
                 return null;
         }

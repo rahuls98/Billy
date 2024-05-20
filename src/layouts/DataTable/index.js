@@ -3,9 +3,11 @@ import { useEffect, useState, useContext, useCallback } from "react";
 import { readData, readInvoiceAndCustomerNames } from "../../apis/data";
 import PdfPreview from "../../components/PdfPreview";
 import { invoiceDataContext } from "../../contexts/invoiceDataContext";
+import TextLine from "../../components/TextLine";
 
-const DataTable = () => {
-    const { createBillForPreview } = useContext(invoiceDataContext);
+const DataTable = ({ setPage }) => {
+    const { createBillForPreview, setBillForEdit } =
+        useContext(invoiceDataContext);
     const [invoices, setInvoices] = useState(null);
     const [data, setData] = useState([]);
     const [bill, setBill] = useState(null);
@@ -15,12 +17,14 @@ const DataTable = () => {
     const fetchAndResetInvoiceList = useCallback(async () => {
         const invoicesItems = await readInvoiceAndCustomerNames();
         const dataItems = await readData();
-        const selectedBill = dataItems[0];
-        const bill = createBillForPreview(selectedBill);
-        setInvoices(invoicesItems);
-        setData(dataItems);
-        setBill(bill);
-        setSelectedItem(dataItems[0]._id);
+        if (dataItems.length > 0) {
+            const selectedBill = dataItems[0];
+            const bill = createBillForPreview(selectedBill);
+            setInvoices(invoicesItems);
+            setData(dataItems);
+            setBill(bill);
+            setSelectedItem(dataItems[0]._id);
+        }
     }, [createBillForPreview]);
 
     const handleSetBill = (id) => {
@@ -47,6 +51,11 @@ const DataTable = () => {
         }
     };
 
+    const handleEdit = () => {
+        setBillForEdit(bill);
+        setPage(0);
+    };
+
     useEffect(() => {
         fetchAndResetInvoiceList();
     }, [fetchAndResetInvoiceList]);
@@ -54,27 +63,45 @@ const DataTable = () => {
     return (
         <div id="data-table-container">
             <ul id="data-table-list">
-                <input
-                    type="text"
-                    placeholder="Search..."
-                    value={search}
-                    onChange={(e) => handleSearch(e.currentTarget.value)}
-                />
-                {invoices &&
-                    invoices.map((invoice) => {
-                        return (
-                            <li
-                                className={
-                                    selectedItem === invoice._id ? "active" : ""
-                                }
-                                key={invoice._id}
-                                onClick={() => handleSetBill(invoice._id)}
-                            >
-                                {invoice.invoiceNo || ""} (
-                                {invoice.billingCustomerName || ""})
-                            </li>
-                        );
-                    })}
+                {!invoices || invoices.length === 0 ? (
+                    <TextLine text={""} placeholder={"No Data!"} />
+                ) : (
+                    <>
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            value={search}
+                            onChange={(e) =>
+                                handleSearch(e.currentTarget.value)
+                            }
+                        />
+                        {invoices.map((invoice) => {
+                            return (
+                                <li
+                                    key={invoice._id}
+                                    onClick={() => handleSetBill(invoice._id)}
+                                >
+                                    <div
+                                        className={
+                                            selectedItem === invoice._id
+                                                ? "active"
+                                                : ""
+                                        }
+                                    >
+                                        {invoice.invoiceNo || ""} (
+                                        {invoice.billingCustomerName || ""})
+                                    </div>
+                                    <div>
+                                        <button onClick={handleEdit}>
+                                            Edit
+                                        </button>
+                                        <button>Delete</button>
+                                    </div>
+                                </li>
+                            );
+                        })}
+                    </>
+                )}
             </ul>
             <div id="data-table-pdf-preview" className="collapsable">
                 <div id="pdf-preview">{bill && <PdfPreview bill={bill} />}</div>
