@@ -152,7 +152,7 @@ const PdfPreview = ({ bill }) => {
                             particulars.map((particular) => (
                                 <tr key={particular[0]?.value}>
                                     <td>{particular[0]?.value}</td>
-                                    <td>{particular[1]?.value}</td>
+                                    <td lang="en">{particular[1]?.value}</td>
                                     <td>{particular[2]?.value}</td>
                                     <td>{particular[3]?.value}</td>
                                     <td>
