@@ -2,9 +2,14 @@ import subprocess
 import os
 import time
 
+from dotenv import load_dotenv
+load_dotenv()
+
+PROJECT_DIRECTORY = os.getenv("PROJECT_DIRECTORY")
+
 # Define paths to the server and build directory
-server_path = os.path.join('/Users/rahul/dev/Projects/Billy', 'server', 'app.js')
-build_path = os.path.join('/Users/rahul/dev/Projects/Billy', 'build')
+server_path = os.path.join(PROJECT_DIRECTORY, 'server', 'app.js')
+build_path = os.path.join(PROJECT_DIRECTORY, 'build')
 
 # Define the command to start the Node server
 node_command = ['node', server_path]
@@ -16,7 +21,7 @@ serve_command = ['npx', 'serve', '-s', build_path]
 os.chdir('/Users/rahul/dev/Projects/Billy/server')
 node_process = subprocess.Popen(node_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 print("Node server started.")
-os.chdir('/Users/rahul/dev/Projects/Billy')
+os.chdir(PROJECT_DIRECTORY)
 
 # Give the Node server some time to start properly
 time.sleep(5)
